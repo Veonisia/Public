@@ -2,6 +2,11 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 
+-- Prevent Stacking: Destroy older instance if it exists before running
+if CoreGui:FindFirstChild("FlyGui") then
+    CoreGui.FlyGui:Destroy()
+end
+
 local Library = {}
 Library.__index = Library
 
@@ -357,12 +362,11 @@ function Library:CreateSection(sectionName)
 end
 
 -- ==================== MODERN IN-TAB COMPONENT NODE FACTORY ====================
--- This creates a highly premium, horizontal stretching container layout tailored perfectly for exploit execution hubs.
 local function CreateScriptHubElement(parent, labelText)
     local BaseFrame = Instance.new("Frame")
     BaseFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    BaseFrame.BackgroundTransparency = 0.55 -- Beautiful Translucent Glass Overlap Style
-    BaseFrame.Size = UDim2.new(0.96, 0, 0, 38) -- Perfectly spans entire X-axis dynamically
+    BaseFrame.BackgroundTransparency = 0.55 
+    BaseFrame.Size = UDim2.new(0.96, 0, 0, 38) 
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 6)
@@ -395,10 +399,10 @@ end
 
 -- ==================== REDESIGNED SCRIPT HUB MODULES ====================
 
--- 1. PREMIUM BUTTON ELEMENT
+-- 1. PREMIUM BUTTON ELEMENT (Fixed unpack error)
 function Section:CreateButton(text, callback)
-    local BaseFrame, Label = CreateElementBase or CreateScriptHubElement(self.Container, text)
-    Label.Size = UDim2.new(1, 0, 1, 0) -- Fill out width entirely
+    local BaseFrame, Label = CreateScriptHubElement(self.Container, text)
+    Label.Size = UDim2.new(1, 0, 1, 0) 
 
     local Trigger = Instance.new("TextButton")
     Trigger.Size = UDim2.new(1, 20, 1, 0)
@@ -407,7 +411,6 @@ function Section:CreateButton(text, callback)
     Trigger.Text = ""
     Trigger.Parent = BaseFrame
 
-    -- Click highlight feedback
     Trigger.MouseButton1Click:Connect(function()
         TweenService:Create(BaseFrame, TweenInfo.new(0.05), {BackgroundTransparency = 0.35}):Play()
         task.wait(0.05)
@@ -460,7 +463,7 @@ function Section:CreateToggle(text, default, callback)
     end)
 end
 
--- 3. PREMIUM SLIDER MODULE (Essential for high-quality scripting hubs)
+-- 3. PREMIUM SLIDER MODULE
 function Section:CreateSlider(text, min, max, default, callback)
     local BaseFrame, Label = CreateScriptHubElement(self.Container, text)
     Label.Size = UDim2.new(0.4, 0, 1, 0)
