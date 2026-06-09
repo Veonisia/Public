@@ -8,7 +8,7 @@ Library.__index = Library
 local Section = {}
 Section.__index = Section
 
--- Dragging Engine Utility
+-- Clean Dragging Engine Utility
 local function MakeDraggable(gui)
     local dragging, dragInput, dragStart, startPos
     gui.InputBegan:Connect(function(input)
@@ -57,7 +57,7 @@ function Library.new(hubTitle, hubVersion)
     self.Canvas.Position = UDim2.new(0.5, 0, 0.5, 0)
     self.Canvas.Size = UDim2.new(1, 0, 1, 0)
 
-    -- Left Control Sidebar Frame Layout (Exact Coordinates from File)
+    -- Left Control Sidebar Frame Layout (Preserving exact layout coordinates from your file)
     self.Left = Instance.new("Frame")
     self.Left.Name = "Left"
     self.Left.Parent = self.Canvas
@@ -92,7 +92,7 @@ function Library.new(hubTitle, hubVersion)
     UIAspectRatioConstraint.Parent = Title
     UIAspectRatioConstraint.AspectRatio = 6.784
 
-    -- Script Hub Brand Name Title Label
+    -- Title Brand Label
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Name = "TitleLabel"
     TitleLabel.Parent = Title
@@ -110,7 +110,7 @@ function Library.new(hubTitle, hubVersion)
     UITextSizeConstraint.Parent = TitleLabel
     UITextSizeConstraint.MaxTextSize = 61
 
-    -- System Application Core Engine Version Label
+    -- Hub Version Label
     local VersionLabel = Instance.new("TextLabel")
     VersionLabel.Name = "VersionLabel"
     VersionLabel.Parent = Title
@@ -124,7 +124,7 @@ function Library.new(hubTitle, hubVersion)
     VersionLabel.TextScaled = true
     VersionLabel.TextXAlignment = Enum.TextXAlignment.Right
 
-    -- Primary Navigation Menu Frame Holder Template Setup Component
+    -- Primary Navigation Menu Frame Holder
     self.MainMenu = Instance.new("Frame")
     self.MainMenu.Name = "MainMenu"
     self.MainMenu.Parent = self.Left
@@ -163,15 +163,22 @@ function Library.new(hubTitle, hubVersion)
     DiscordInviteLabel.TextScaled = true
 
     -- Interactive Functional Minimize Window Toggle Action Control
-    local HideButton = Instance.new("ImageButton")
+    local HideButton = Instance.new("TextButton")
     HideButton.Name = "HideButton"
     HideButton.Parent = self.Left
+    HideButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     HideButton.BackgroundTransparency = 1.000
     HideButton.Position = UDim2.new(0.878521144, 0, 0.103209019, 0)
     HideButton.Size = UDim2.new(0.17605634, 0, 0.0468343459, 0)
     HideButton.ZIndex = 2
-    HideButton.Image = "rbxassetid://93575451903318"
-    HideButton.ImageTransparency = 0.500
+    HideButton.Text = ""
+
+    local HideButtonImg = Instance.new("ImageLabel")
+    HideButtonImg.Size = UDim2.new(1, 0, 1, 0)
+    HideButtonImg.BackgroundTransparency = 1.000
+    HideButtonImg.Image = "rbxassetid://93575451903318"
+    HideButtonImg.ImageTransparency = 0.5
+    HideButtonImg.Parent = HideButton
 
     local ArrowLabel = Instance.new("TextLabel")
     ArrowLabel.Name = "ArrowLabel"
@@ -188,9 +195,9 @@ function Library.new(hubTitle, hubVersion)
     local UIGradient_2 = Instance.new("UIGradient")
     UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 51, 51)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 128, 17))}
     UIGradient_2.Rotation = 90
-    UIGradient_2.Parent = HideButton
+    UIGradient_2.Parent = HideButtonImg
 
-    -- Right Section Content Target Container Canvas Frame View Window (Exact Specs)
+    -- Right Section Content Panel
     self.Middle = Instance.new("Frame")
     self.Middle.Name = "Middle"
     self.Middle.Parent = self.Canvas
@@ -235,11 +242,10 @@ function Library.new(hubTitle, hubVersion)
     UICorner_9.CornerRadius = UDim.new(0.1, 0)
     UICorner_9.Parent = Title_2
 
-    -- Hide/Show Window UI Event Handler Engine Logic
+    -- Hide / Show Global System Toggle Logic
     HideButton.MouseButton1Click:Connect(function()
         self.Toggled = not self.Toggled
         ArrowLabel.Text = self.Toggled and "Hide" or "Show"
-        
         self.MainMenu.Visible = self.Toggled
         self.Middle.Visible = self.Toggled
     end)
@@ -250,7 +256,6 @@ end
 function Library:CreateSection(sectionName)
     local sectionObject = setmetatable({}, Section)
     
-    -- Category Nav Row Selector Button Component setup properties
     local SectionButton = Instance.new("TextButton")
     SectionButton.Name = "Template_" .. sectionName
     SectionButton.Parent = self.Sections
@@ -281,9 +286,9 @@ function Library:CreateSection(sectionName)
     PinkTheme.Rotation = 90
     PinkTheme.Parent = SectionButton
 
-    -- Pure White Highlight Stroke System Config (As Requested)
+    -- Enabled Pure White Highlight Outline Stroke (No Yellow!)
     local SelectedStroke = Instance.new("UIStroke")
-    SelectedStroke.Thickness = 2.5
+    SelectedStroke.Thickness = 2
     SelectedStroke.Color = Color3.fromRGB(255, 255, 255)
     SelectedStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     SelectedStroke.Enabled = false
@@ -293,7 +298,7 @@ function Library:CreateSection(sectionName)
     UIAspectRatio.Parent = SectionButton
     UIAspectRatio.AspectRatio = 4.162
 
-    -- Interactive Category Canvas Container Window List Setup Block
+    -- Interactive Category Canvas View Window Container
     local Container = Instance.new("ScrollingFrame")
     Container.Name = "Container_" .. sectionName
     Container.Parent = self.Middle
@@ -311,17 +316,21 @@ function Library:CreateSection(sectionName)
     ElementListLayout.Parent = Container
     ElementListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     ElementListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    ElementListLayout.Padding = UDim.new(0.03, 0)
+    ElementListLayout.Padding = UDim.new(0, 6)
+
+    local ElementPadding = Instance.new("UIPadding")
+    ElementPadding.PaddingTop = UDim.new(0, 4)
+    ElementPadding.PaddingBottom = UDim.new(0, 4)
+    ElementPadding.Parent = Container
 
     ElementListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        Container.CanvasSize = UDim2.new(0, 0, 0, ElementListLayout.AbsoluteContentSize.Y + 12)
+        Container.CanvasSize = UDim2.new(0, 0, 0, ElementListLayout.AbsoluteContentSize.Y + 16)
     end)
 
     sectionObject.Container = Container
     sectionObject.Button = SectionButton
     sectionObject.Stroke = SelectedStroke
 
-    -- Dynamic Click Interface Selection Navigation Trigger Routine Loop Actions Handler
     SectionButton.MouseButton1Click:Connect(function()
         if not self.Toggled then return end
         if self.CurrentSection then
@@ -334,7 +343,6 @@ function Library:CreateSection(sectionName)
         self.CurrentSection = sectionObject
     end)
 
-    -- Primary Category Context Auto Initializer Switch Action Route block handler
     if #self.SectionsList == 0 then
         task.spawn(function()
             sectionObject.Container.Visible = true
@@ -348,84 +356,92 @@ function Library:CreateSection(sectionName)
     return sectionObject
 end
 
--- Custom Sub-Component Component Base Node Assembly Factory Router
-local function CreateElementBase(parent, labelText)
-    -- Sleek white/pink aesthetic glass container box (No dark backgrounds!)
+-- ==================== MODERN IN-TAB COMPONENT NODE FACTORY ====================
+-- This creates a highly premium, horizontal stretching container layout tailored perfectly for exploit execution hubs.
+local function CreateScriptHubElement(parent, labelText)
     local BaseFrame = Instance.new("Frame")
-    BaseFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    BaseFrame.BackgroundTransparency = 0.88 
-    BaseFrame.Size = UDim2.new(0.96, 0, 0.14, 0)
+    BaseFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    BaseFrame.BackgroundTransparency = 0.55 -- Beautiful Translucent Glass Overlap Style
+    BaseFrame.Size = UDim2.new(0.96, 0, 0, 38) -- Perfectly spans entire X-axis dynamically
 
     local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0.18, 0)
+    UICorner.CornerRadius = UDim.new(0, 6)
     UICorner.Parent = BaseFrame
 
-    local BorderStroke = Instance.new("UIStroke")
-    BorderStroke.Thickness = 1.2
-    BorderStroke.Color = Color3.fromRGB(255, 148, 255)
-    BorderStroke.Parent = BaseFrame
+    local NeonBorder = Instance.new("UIStroke")
+    NeonBorder.Thickness = 1
+    NeonBorder.Color = Color3.fromRGB(255, 100, 255)
+    NeonBorder.Transparency = 0.5
+    NeonBorder.Parent = BaseFrame
+
+    local Padding = Instance.new("UIPadding")
+    Padding.PaddingLeft = UDim.new(0, 10)
+    Padding.PaddingRight = UDim.new(0, 10)
+    Padding.Parent = BaseFrame
 
     local Label = Instance.new("TextLabel")
     Label.Parent = BaseFrame
     Label.BackgroundTransparency = 1.000
-    Label.Position = UDim2.new(0.04, 0, 0, 0)
     Label.Size = UDim2.new(0.5, 0, 1, 0)
     Label.Font = Enum.Font.FredokaOne
     Label.Text = labelText
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Label.TextScaled = true
+    Label.TextSize = 14
     Label.TextXAlignment = Enum.TextXAlignment.Left
-
-    local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-    UIAspectRatioConstraint.Parent = BaseFrame
-    UIAspectRatioConstraint.AspectRatio = 6.2
 
     BaseFrame.Parent = parent
     return BaseFrame, Label
 end
 
--- ==================== LIBRARY INPUT COMPONENTS ====================
+-- ==================== REDESIGNED SCRIPT HUB MODULES ====================
 
--- 1. STANDARD INTERACTIVE ACTION BUTTON
+-- 1. PREMIUM BUTTON ELEMENT
 function Section:CreateButton(text, callback)
-    local BaseFrame, Label = CreateElementBase(self.Container, text)
-    Label.Size = UDim2.new(0.92, 0, 1, 0)
+    local BaseFrame, Label = CreateElementBase or CreateScriptHubElement(self.Container, text)
+    Label.Size = UDim2.new(1, 0, 1, 0) -- Fill out width entirely
 
     local Trigger = Instance.new("TextButton")
-    Trigger.Size = UDim2.new(1, 0, 1, 0)
+    Trigger.Size = UDim2.new(1, 20, 1, 0)
+    Trigger.Position = UDim2.new(0, -10, 0, 0)
     Trigger.BackgroundTransparency = 1.000
     Trigger.Text = ""
     Trigger.Parent = BaseFrame
 
+    -- Click highlight feedback
     Trigger.MouseButton1Click:Connect(function()
-        TweenService:Create(BaseFrame, TweenInfo.new(0.08), {BackgroundTransparency = 0.65}):Play()
-        task.wait(0.08)
-        TweenService:Create(BaseFrame, TweenInfo.new(0.1), {BackgroundTransparency = 0.88}):Play()
+        TweenService:Create(BaseFrame, TweenInfo.new(0.05), {BackgroundTransparency = 0.35}):Play()
+        task.wait(0.05)
+        TweenService:Create(BaseFrame, TweenInfo.new(0.1), {BackgroundTransparency = 0.55}):Play()
         callback()
     end)
 end
 
 -- 2. TRANSITIONAL PARAMETER STATE TOGGLE SWITCH
 function Section:CreateToggle(text, default, callback)
-    local BaseFrame, Label = CreateElementBase(self.Container, text)
+    local BaseFrame, Label = CreateScriptHubElement(self.Container, text)
     local ActiveState = default or false
 
     local ToggleFrame = Instance.new("Frame")
     ToggleFrame.AnchorPoint = Vector2.new(1, 0.5)
-    ToggleFrame.Position = UDim2.new(0.96, 0, 0.5, 0)
-    ToggleFrame.Size = UDim2.new(0.13, 0, 0.55, 0)
-    ToggleFrame.BackgroundColor3 = ActiveState and Color3.fromRGB(255, 0, 251) or Color3.fromRGB(255, 255, 255)
-    ToggleFrame.BackgroundTransparency = ActiveState and 0 or 0.7
+    ToggleFrame.Position = UDim2.new(1, 0, 0.5, 0)
+    ToggleFrame.Size = UDim2.new(0, 36, 0, 18)
+    ToggleFrame.BackgroundColor3 = ActiveState and Color3.fromRGB(255, 0, 251) or Color3.fromRGB(45, 45, 45)
     ToggleFrame.Parent = BaseFrame
 
     local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0.4, 0)
+    UICorner.CornerRadius = UDim.new(1, 0)
     UICorner.Parent = ToggleFrame
-    
-    local ToggleStroke = Instance.new("UIStroke")
-    ToggleStroke.Thickness = 1
-    ToggleStroke.Color = Color3.fromRGB(255, 148, 255)
-    ToggleStroke.Parent = ToggleFrame
+
+    local Knob = Instance.new("Frame")
+    Knob.Size = UDim2.new(0, 14, 0, 14)
+    Knob.AnchorPoint = Vector2.new(0, 0.5)
+    Knob.Position = ActiveState and UDim2.new(1, -16, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
+    Knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Knob.Parent = ToggleFrame
+
+    local KnobCorner = Instance.new("UICorner")
+    KnobCorner.CornerRadius = UDim.new(1, 0)
+    KnobCorner.Parent = Knob
 
     local SwitchButton = Instance.new("TextButton")
     SwitchButton.Size = UDim2.new(1, 0, 1, 0)
@@ -433,48 +449,110 @@ function Section:CreateToggle(text, default, callback)
     SwitchButton.Text = ""
     SwitchButton.Parent = ToggleFrame
 
-    local function RenderToggleState()
-        local nextColor = ActiveState and Color3.fromRGB(255, 0, 251) or Color3.fromRGB(255, 255, 255)
-        local nextTransparency = ActiveState and 0 or 0.7
-        TweenService:Create(ToggleFrame, TweenInfo.new(0.12), {
-            BackgroundColor3 = nextColor, 
-            BackgroundTransparency = nextTransparency
-        }):Play()
-        callback(ActiveState)
-    end
-
     SwitchButton.MouseButton1Click:Connect(function()
         ActiveState = not ActiveState
-        RenderToggleState()
+        local targetColor = ActiveState and Color3.fromRGB(255, 0, 251) or Color3.fromRGB(45, 45, 45)
+        local targetPos = ActiveState and UDim2.new(1, -16, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
+        
+        TweenService:Create(ToggleFrame, TweenInfo.new(0.12), {BackgroundColor3 = targetColor}):Play()
+        TweenService:Create(Knob, TweenInfo.new(0.12), {Position = targetPos}):Play()
+        callback(ActiveState)
     end)
 end
 
--- 3. INTERACTIVE STRING CONTEXT DATA TEXTBOX SLOT
+-- 3. PREMIUM SLIDER MODULE (Essential for high-quality scripting hubs)
+function Section:CreateSlider(text, min, max, default, callback)
+    local BaseFrame, Label = CreateScriptHubElement(self.Container, text)
+    Label.Size = UDim2.new(0.4, 0, 1, 0)
+
+    local SliderBar = Instance.new("Frame")
+    SliderBar.AnchorPoint = Vector2.new(1, 0.5)
+    SliderBar.Position = UDim2.new(0.9, -35, 0.5, 0)
+    SliderBar.Size = UDim2.new(0.45, 0, 0, 4)
+    SliderBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    SliderBar.Parent = BaseFrame
+
+    local SliderFill = Instance.new("Frame")
+    SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+    SliderFill.BackgroundColor3 = Color3.fromRGB(255, 100, 255)
+    SliderFill.BorderSizePixel = 0
+    SliderFill.Parent = SliderBar
+
+    local ValueLabel = Instance.new("TextLabel")
+    ValueLabel.AnchorPoint = Vector2.new(1, 0.5)
+    ValueLabel.Position = UDim2.new(1, 0, 0.5, 0)
+    ValueLabel.Size = UDim2.new(0, 30, 1, 0)
+    ValueLabel.BackgroundTransparency = 1.000
+    ValueLabel.Font = Enum.Font.FredokaOne
+    ValueLabel.Text = tostring(default)
+    ValueLabel.TextColor3 = Color3.fromRGB(255, 148, 255)
+    ValueLabel.TextSize = 13
+    ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
+    ValueLabel.Parent = BaseFrame
+
+    local SliderBtn = Instance.new("TextButton")
+    SliderBtn.Size = UDim2.new(1, 0, 3, 0)
+    SliderBtn.AnchorPoint = Vector2.new(0, 0.5)
+    SliderBtn.Position = UDim2.new(0, 0, 0.5, 0)
+    SliderBtn.BackgroundTransparency = 1.000
+    SliderBtn.Text = ""
+    SliderBtn.Parent = SliderBar
+
+    local function UpdateSliderValue(input)
+        local percentage = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
+        local val = math.floor(min + (max - min) * percentage)
+        SliderFill.Size = UDim2.new(percentage, 0, 1, 0)
+        ValueLabel.Text = tostring(val)
+        callback(val)
+    end
+
+    local IsDragging = false
+    SliderBtn.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            IsDragging = true
+            UpdateSliderValue(input)
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if IsDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            UpdateSliderValue(input)
+        end
+    end)
+
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            IsDragging = false
+        end
+    end)
+end
+
+-- 4. INTERACTIVE STRING CONTEXT DATA TEXTBOX
 function Section:CreateTextBox(text, placeholder, callback)
-    local BaseFrame, Label = CreateElementBase(self.Container, text)
-    Label.Size = UDim2.new(0.48, 0, 1, 0)
+    local BaseFrame, Label = CreateScriptHubElement(self.Container, text)
+    Label.Size = UDim2.new(0.5, 0, 1, 0)
 
     local InputBox = Instance.new("TextBox")
     InputBox.AnchorPoint = Vector2.new(1, 0.5)
-    InputBox.Position = UDim2.new(0.96, 0, 0.5, 0)
-    InputBox.Size = UDim2.new(0.44, 0, 0.6, 0)
-    InputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    InputBox.BackgroundTransparency = 0.8
+    InputBox.Position = UDim2.new(1, 0, 0.5, 0)
+    InputBox.Size = UDim2.new(0.42, 0, 0, 24)
+    InputBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     InputBox.Font = Enum.Font.FredokaOne
-    InputBox.PlaceholderText = placeholder or "Input value..."
+    InputBox.PlaceholderText = placeholder or "Value..."
     InputBox.Text = ""
     InputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    InputBox.PlaceholderColor3 = Color3.fromRGB(230, 190, 230)
-    InputBox.TextScaled = true
+    InputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+    InputBox.TextSize = 12
     InputBox.Parent = BaseFrame
 
     local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0.25, 0)
+    UICorner.CornerRadius = UDim.new(0, 4)
     UICorner.Parent = InputBox
 
     local TextBoxStroke = Instance.new("UIStroke")
     TextBoxStroke.Thickness = 1
-    TextBoxStroke.Color = Color3.fromRGB(255, 148, 255)
+    TextBoxStroke.Color = Color3.fromRGB(255, 100, 255)
+    TextBoxStroke.Transparency = 0.4
     TextBoxStroke.Parent = InputBox
 
     InputBox.FocusLost:Connect(function(enterPressed)
@@ -482,49 +560,49 @@ function Section:CreateTextBox(text, placeholder, callback)
     end)
 end
 
--- 4. MULTI-OPTION CONFIGURATION DROPDOWN HUB WINDOW
+-- 5. MULTI-OPTION CONFIGURATION DROPDOWN HUB WINDOW
 function Section:CreateDropdown(text, listOptions, callback)
-    local BaseFrame, Label = CreateElementBase(self.Container, text)
+    local BaseFrame, Label = CreateScriptHubElement(self.Container, text)
     local ActiveStatus = false
     
     local DropdownBtn = Instance.new("TextButton")
     DropdownBtn.AnchorPoint = Vector2.new(1, 0.5)
-    DropdownBtn.Position = UDim2.new(0.96, 0, 0.5, 0)
-    DropdownBtn.Size = UDim2.new(0.42, 0, 0.6, 0)
-    DropdownBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    DropdownBtn.BackgroundTransparency = 0.2
+    DropdownBtn.Position = UDim2.new(1, 0, 0.5, 0)
+    DropdownBtn.Size = UDim2.new(0.42, 0, 0, 24)
+    DropdownBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     DropdownBtn.Font = Enum.Font.FredokaOne
     DropdownBtn.Text = "Select v"
-    DropdownBtn.TextColor3 = Color3.fromRGB(247, 0, 255)
-    DropdownBtn.TextScaled = true
+    DropdownBtn.TextColor3 = Color3.fromRGB(255, 148, 255)
+    DropdownBtn.TextSize = 12
     DropdownBtn.Parent = BaseFrame
 
     local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0.25, 0)
+    UICorner.CornerRadius = UDim.new(0, 4)
     UICorner.Parent = DropdownBtn
     
     local DropdownBtnStroke = Instance.new("UIStroke")
     DropdownBtnStroke.Thickness = 1
-    DropdownBtnStroke.Color = Color3.fromRGB(255, 148, 255)
+    DropdownBtnStroke.Color = Color3.fromRGB(255, 100, 255)
+    DropdownBtnStroke.Transparency = 0.4
     DropdownBtnStroke.Parent = DropdownBtn
 
     local ListFrame = Instance.new("Frame")
     ListFrame.Name = "ListFrame"
     ListFrame.ZIndex = 8
-    ListFrame.Position = UDim2.new(0, 0, 1.3, 0)
+    ListFrame.Position = UDim2.new(0, 0, 1, 4)
     ListFrame.Size = UDim2.new(1, 0, 0, 0)
-    ListFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ListFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     ListFrame.Visible = false
     ListFrame.ClipsDescendants = true
     ListFrame.Parent = DropdownBtn
 
     local ListCorner = Instance.new("UICorner")
-    ListCorner.CornerRadius = UDim.new(0.15, 0)
+    ListCorner.CornerRadius = UDim.new(0, 6)
     ListCorner.Parent = ListFrame
 
     local ListStroke = Instance.new("UIStroke")
     ListStroke.Thickness = 1
-    ListStroke.Color = Color3.fromRGB(255, 148, 255)
+    ListStroke.Color = Color3.fromRGB(255, 100, 255)
     ListStroke.Parent = ListFrame
 
     local ListLayout = Instance.new("UIListLayout")
@@ -535,10 +613,10 @@ function Section:CreateDropdown(text, listOptions, callback)
         ActiveStatus = not ActiveStatus
         if ActiveStatus then
             ListFrame.Visible = true
-            local targetSizeHeight = #listOptions * 24
-            TweenService:Create(ListFrame, TweenInfo.new(0.15), {Size = UDim2.new(1, 0, 0, targetSizeHeight)}):Play()
+            local targetSizeHeight = math.clamp(#listOptions * 24, 24, 120)
+            TweenService:Create(ListFrame, TweenInfo.new(0.12), {Size = UDim2.new(1, 0, 0, targetSizeHeight)}):Play()
         else
-            local hideTween = TweenService:Create(ListFrame, TweenInfo.new(0.12), {Size = UDim2.new(1, 0, 0, 0)})
+            local hideTween = TweenService:Create(ListFrame, TweenInfo.new(0.1), {Size = UDim2.new(1, 0, 0, 0)})
             hideTween:Play()
             hideTween.Completed:Connect(function()
                 if not ActiveStatus then ListFrame.Visible = false end
@@ -551,14 +629,23 @@ function Section:CreateDropdown(text, listOptions, callback)
     for _, choice in pairs(listOptions) do
         local OptBtn = Instance.new("TextButton")
         OptBtn.Size = UDim2.new(1, 0, 0, 24)
-        OptBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        OptBtn.BackgroundTransparency = 0.05
+        OptBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+        OptBtn.BackgroundTransparency = 1
         OptBtn.ZIndex = 9
         OptBtn.Font = Enum.Font.FredokaOne
         OptBtn.Text = tostring(choice)
-        OptBtn.TextColor3 = Color3.fromRGB(130, 30, 140)
-        OptBtn.TextSize = 13
+        OptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        OptBtn.TextSize = 12
         OptBtn.Parent = ListFrame
+
+        OptBtn.MouseEnter:Connect(function()
+            OptBtn.BackgroundTransparency = 0.9
+            OptBtn.TextColor3 = Color3.fromRGB(255, 100, 255)
+        end)
+        OptBtn.MouseLeave:Connect(function()
+            OptBtn.BackgroundTransparency = 1
+            OptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end)
 
         OptBtn.MouseButton1Click:Connect(function()
             DropdownBtn.Text = tostring(choice)
